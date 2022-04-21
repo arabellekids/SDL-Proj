@@ -3,9 +3,8 @@
 
 #include "Game.h"
 #include "TextureManager.h"
-#include "Objects/Player.h"
-#include "Objects/Enemy.h"
 
+Game* Game::s_pInstance = NULL;
 
 bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool fullscreen)
 {
@@ -65,18 +64,8 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
         return false;
     }
 
-    m_go = new GameObject();
-    m_player = new Player();
-    m_enemy = new Enemy();
-
-    // Load the objects
-    m_go->load(100,100, 68,54, "Goku");
-    m_player->load(300,300, 68,54, "Goku");
-    m_enemy->load(0,0, 68,54, "Goku");
-    
-    m_gameObjects.push_back(m_go);
-    m_gameObjects.push_back(m_player);
-    m_gameObjects.push_back(m_enemy);
+    m_gameObjects.push_back( new Player(new LoaderParams(100,100, 68,54, "Goku")) );
+    m_gameObjects.push_back( new Enemy(new LoaderParams(300,300, 68,54, "Goku")) );
     
     std::cout << "Init success!\n";
     
@@ -92,7 +81,7 @@ void Game::render()
     // Loop through the objects and draw them
     for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
     {
-        m_gameObjects[i]->draw(m_pRenderer);
+        m_gameObjects[i]->draw();
     }
 
 	// Draw to the screen
@@ -104,6 +93,13 @@ void Game::clean()
 	std::cout << "Cleaning game...\n";
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
+
+    // Loop through the objects and clean them
+    for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
+    {
+        m_gameObjects[i]->clean();
+    }
+
     SDL_Delay(2000);
 	SDL_Quit();
 }

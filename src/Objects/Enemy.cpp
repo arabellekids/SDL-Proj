@@ -1,18 +1,19 @@
-#include "Enemy.h"
+#include <SDL2/SDL.h>
+#include "_Objects.h"
 
-void Enemy::load(int x,int y, int width, int height, std::string texID)
+Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
-    GameObject::load(x,y, width,height, texID);
 }
 
-void Enemy::draw(SDL_Renderer* pRenderer)
+void Enemy::draw()
 {
-    GameObject::draw(pRenderer);
+    SDLGameObject::draw();
 }
 
 void Enemy::update()
 {
-    m_y += 1;
     m_x += 1;
     m_curFrame = (SDL_GetTicks() / 100) % 5;
 }
+
+void Enemy::clean() {}
