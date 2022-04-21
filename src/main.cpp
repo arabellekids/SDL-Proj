@@ -14,7 +14,7 @@ int main()
         g_pGame->update();
         g_pGame->render();
 
-        //SDL_Delay(10);
+        SDL_Delay(10);
     }
     
     g_pGame->clean();

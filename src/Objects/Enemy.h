@@ -1,12 +1,12 @@
-#ifndef __PLAYER__
-#define __PLAYER__
+#ifndef __ENEMY__
+#define __ENEMY__
 
 #include "GameObject.h"
 
-class Player : public GameObject
+class Enemy : public GameObject
 {
 public:
-    Player(){}
+    Enemy(){}
 
     void load(int x,int y, int width, int height, std::string texID);
     void draw(SDL_Renderer* pRenderer);

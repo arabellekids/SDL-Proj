@@ -3,8 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <vector>
 
-#include "Objects/Player.h"
+#include "Objects/GameObject.h"
 
 class Game
 {
@@ -32,8 +33,11 @@ private:
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;
 
-    GameObject m_go;
-    Player m_player;
+    GameObject* m_go;
+    GameObject* m_player;
+    GameObject* m_enemy;
+
+    std::vector<GameObject*> m_gameObjects;
     
     bool m_bRunning;
 };
