@@ -1,5 +1,5 @@
 EXE = App
-LIBS = -lSDL2
+LIBS = -lSDL2 -lSDL2_image
 DEBUG = FALSE
 
 GCC = gcc
