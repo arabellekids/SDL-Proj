@@ -1,12 +1,18 @@
 #include <SDL2/SDL_image.h>
 #include "TextureManager.h"
 
+TextureManager* TextureManager::s_pInstance = NULL;
+
 bool TextureManager::load(std::string filename,std::string id, SDL_Renderer* pRenderer)
 {
     SDL_Surface* pTmpSurf = IMG_Load(filename.c_str());
 
     // Failed to load img
-    if(pTmpSurf == NULL) { return false; }
+    if(pTmpSurf == NULL)
+    {
+        printf("Failed to load img %s at %s\n", id.c_str(), filename.c_str());
+        return false;
+    }
 
     // Convert surface to texture
     SDL_Texture* pTex = SDL_CreateTextureFromSurface(pRenderer, pTmpSurf);
@@ -15,11 +21,16 @@ bool TextureManager::load(std::string filename,std::string id, SDL_Renderer* pRe
     SDL_FreeSurface(pTmpSurf);
 
     // Failed to create texture
-    if(pTex == NULL) { return false; }
+    if(pTex == NULL)
+    {
+        printf("Failed to create texture for %s\n", id.c_str());
+        return false;
+    }
 
     // Finished loading, add the texture to the texture map
     m_textureMap[id] = pTex;
     
+    printf("Finished loading texture %s at %s\n", id.c_str(), filename.c_str());
     return true;
 }
 

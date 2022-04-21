@@ -2,7 +2,9 @@
 #define __GAME__
 
 #include <SDL2/SDL.h>
-#include "TextureManager.h"
+#include <iostream>
+
+#include "Objects/Player.h"
 
 class Game
 {
@@ -21,15 +23,18 @@ public:
     void clean();
 
     // function to get the private running variable
-    bool running() { return m_bRunning; }
+    bool running()
+    {
+        return m_bRunning;
+    }
 
 private:
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;
 
-    int m_curFrame;
-    TextureManager m_texManager;
-
+    GameObject m_go;
+    Player m_player;
+    
     bool m_bRunning;
 };
 

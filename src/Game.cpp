@@ -1,6 +1,8 @@
-#include <iostream>
+//#include <iostream>
 #include <SDL2/SDL_image.h>
+
 #include "Game.h"
+#include "TextureManager.h"
 
 
 bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool fullscreen)
@@ -48,15 +50,22 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     std::cout << "Renderer creation success!\n";
     
     // Clear the render color to white
-    SDL_SetRenderDrawColor(m_pRenderer, 255,255,255,255);
-    
-    std::cout << "Init success!\n";
+    SDL_SetRenderDrawColor(m_pRenderer, 255,0,0,255);
     
     // Run the game
     m_bRunning = true;
+    
+    //Load the texture
+    if(!TextureManager::Instance()->load("assets/goku_punch_anim.png", "Goku", m_pRenderer))
+    {
+        return false;
+    }
 
-    // Load the image
-    m_texManager.load("assets/goku_punch_anim.png", "Goku", m_pRenderer);
+    // Load the objects
+    m_go.load(100,100, 68,54, "Goku");
+    m_player.load(300,300, 68,54, "Goku");
+    
+    std::cout << "Init success!\n";
     
     // Initialization finished
     return true;
@@ -67,11 +76,9 @@ void Game::render()
 	// Clear the renderer to the draw color
 	SDL_RenderClear(m_pRenderer);
 	
-    // Draw the static texture
-    m_texManager.draw("Goku", 0,0, 68,54, m_pRenderer);
-
-    // Draw the animated texture
-    m_texManager.drawFrame("Goku", 100,100, 68,54, 1,m_curFrame, m_pRenderer);
+    // Draw the objects
+    m_go.draw(m_pRenderer);
+    m_player.draw(m_pRenderer);
 
 	// Draw to the screen
 	SDL_RenderPresent(m_pRenderer);
@@ -82,6 +89,7 @@ void Game::clean()
 	std::cout << "Cleaning game...\n";
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
+    SDL_Delay(2000);
 	SDL_Quit();
 }
 
@@ -105,5 +113,6 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    m_curFrame = ((int)SDL_GetTicks() / 100) % 5;
+    m_go.update();
+    m_player.update();
 }

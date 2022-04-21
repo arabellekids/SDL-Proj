@@ -13,6 +13,8 @@ int main()
         g_pGame->handleEvents();
         g_pGame->update();
         g_pGame->render();
+
+        //SDL_Delay(10);
     }
     
     g_pGame->clean();
