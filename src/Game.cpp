@@ -54,25 +54,10 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     
     // Run the game
     m_bRunning = true;
+
     // Load the image
-    SDL_Surface* pTmpSurface = IMG_Load("assets/goku_punch_anim.png");
-
-    m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTmpSurface);
-
-    SDL_FreeSurface(pTmpSurface);
-
-    // Set the source rect
-    m_srcRect.x = 0;
-    m_srcRect.y = 0;
-    m_srcRect.w = 68;
-    m_srcRect.h = 54;
+    m_texManager.load("assets/goku_punch_anim.png", "Goku", m_pRenderer);
     
-    // Set the dest rect
-    m_destRect.x = 0;
-    m_destRect.y = 0;
-    m_destRect.w = m_srcRect.w;
-    m_destRect.h = m_srcRect.h;
-
     // Initialization finished
     return true;
 }
@@ -82,8 +67,11 @@ void Game::render()
 	// Clear the renderer to the draw color
 	SDL_RenderClear(m_pRenderer);
 	
-    // Draw the texture
-    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_srcRect, &m_destRect, 45,NULL, SDL_FLIP_HORIZONTAL);
+    // Draw the static texture
+    m_texManager.draw("Goku", 0,0, 68,54, m_pRenderer);
+
+    // Draw the animated texture
+    m_texManager.drawFrame("Goku", 100,100, 68,54, 1,m_curFrame, m_pRenderer);
 
 	// Draw to the screen
 	SDL_RenderPresent(m_pRenderer);
@@ -117,5 +105,5 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    m_srcRect.x = 68 * ( ((int)SDL_GetTicks() / 100) % 5 );
+    m_curFrame = ((int)SDL_GetTicks() / 100) % 5;
 }
