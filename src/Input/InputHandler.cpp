@@ -31,6 +31,15 @@ void InputHandler::initJoysticks()
 
             // Add the pair of joystick values
             m_joystickValues.push_back(std::make_pair(new Vector2D(0,0), new Vector2D(0,0)));
+
+            // Add the button states
+            std::vector<bool> tmpButtons;
+
+            for(int j = 0; j < SDL_JoystickNumButtons(joy); j++)
+            {
+                tmpButtons.push_back(false);
+            }
+            m_buttonStates.push_back(tmpButtons);
         }
         else
         {
@@ -70,75 +79,47 @@ void InputHandler::update()
         {
             Game::Instance()->quit();
         }
+
+        // Button down
+        if(event.type == SDL_JOYBUTTONDOWN)
+        {
+            int joyID = event.jaxis.which;
+            m_buttonStates[joyID][event.jbutton.button] = true;
+        }
+        // Button up
+        if(event.type == SDL_JOYBUTTONUP)
+        {
+            int joyID = event.jaxis.which;
+            m_buttonStates[joyID][event.jbutton.button] = false;
+        }
+
+        // Joystick movement
         if(event.type == SDL_JOYAXISMOTION)
         {
-            //std::cout << "Joystick Moved! Value=" << event.jaxis.value <<  "\n";
             int joyID = event.jaxis.which;
-
+            float val = event.jaxis.value / (float)(SDL_JOYSTICK_AXIS_MAX);
+            if(fabs(val) <= m_joyDeadZone) { val = 0; }
+            
             switch(event.jaxis.axis)
             {
                 // Left stick left-right
                 case 0:
-                    if(event.jaxis.value > m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].first->setX(1);
-                    }
-                    else if(event.jaxis.value < -m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].first->setX(-1);
-                    }
-                    else
-                    {
-                        m_joystickValues[joyID].first->setX(0);
-                    }   
+                    m_joystickValues[joyID].first->setX(val);
                 break;
 
                 // Left stick up-down
                 case 1:
-                    if(event.jaxis.value > m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].first->setY(1);
-                    }
-                    else if(event.jaxis.value < -m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].first->setY(-1);
-                    }
-                    else
-                    {
-                        m_joystickValues[joyID].first->setY(0);
-                    }   
+                    m_joystickValues[joyID].first->setY(val);
                 break;
 
                 // Right stick left-right
                 case 3:
-                    if(event.jaxis.value > m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].second->setX(1);
-                    }
-                    else if(event.jaxis.value < -m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].second->setX(-1);
-                    }
-                    else
-                    {
-                        m_joystickValues[joyID].second->setX(0);
-                    }   
+                    m_joystickValues[joyID].second->setX(val);
                 break;
 
                 // Right stick up-down
                 case 4:
-                    if(event.jaxis.value > m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].second->setY(1);
-                    }
-                    else if(event.jaxis.value < -m_joyDeadZone)
-                    {
-                        m_joystickValues[joyID].second->setY(-1);
-                    }
-                    else
-                    {
-                        m_joystickValues[joyID].second->setY(0);
-                    }   
+                    m_joystickValues[joyID].second->setY(val);
                 break;
 
                 default:
@@ -148,7 +129,7 @@ void InputHandler::update()
     }
 }
 
-int InputHandler::xvalue(int joy, int stick)
+float InputHandler::xvalue(int joy, int stick)
 {
     if(m_joystickValues.size() > 0)
     {
@@ -166,7 +147,7 @@ int InputHandler::xvalue(int joy, int stick)
     return 0;
 }
 
-int InputHandler::yvalue(int joy, int stick)
+float InputHandler::yvalue(int joy, int stick)
 {
     if(m_joystickValues.size() > 0)
     {

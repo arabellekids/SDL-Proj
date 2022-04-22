@@ -26,6 +26,8 @@ void Player::handleInput()
     // Joysticks not initialized
     if(!InputHandler::Instance()->joysticksInited()){ return; }
 
+    // Y is being pushed
+    if(InputHandler::Instance()->getButtonState(0, 3)) { return; }
     m_vel.setX(InputHandler::Instance()->xvalue(0, 1) * 2);
     m_vel.setY(InputHandler::Instance()->yvalue(0, 1) * 2);
 }

@@ -23,8 +23,14 @@ public:
     void initJoysticks();
     bool joysticksInited() { return m_bJoysticksInited; }
 
-    int xvalue(int joy, int stick);
-    int yvalue(int joy, int stick);
+    float xvalue(int joy, int stick);
+    float yvalue(int joy, int stick);
+
+    bool getButtonState(int joy, int buttonNum)
+    {
+        if(m_buttonStates.size() == 0){ return false; }
+        return m_buttonStates[joy][buttonNum];
+    }
 
 private:
     InputHandler() {}
@@ -34,9 +40,10 @@ private:
 
     std::vector<SDL_Joystick*> m_joysticks;
     std::vector<std::pair<Vector2D*, Vector2D*>> m_joystickValues;
+    std::vector<std::vector<bool>> m_buttonStates;
 
     bool m_bJoysticksInited;
-    const int m_joyDeadZone = 10000;
+    const float m_joyDeadZone = 0.2f;
 };
 typedef InputHandler TheInputHandler;
 
