@@ -104,13 +104,8 @@ void Game::clean()
     {
         m_gameObjects[i]->clean();
     }
-
+    
     SDL_Delay(2000);
-}
-
-void Game::quit()
-{
-    clean();
     SDL_Quit();
 }
 

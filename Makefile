@@ -1,4 +1,4 @@
-EXE = App
+EXE = SDLApp
 LIBS = -lSDL2 -lSDL2_image
 DEBUG = FALSE
 

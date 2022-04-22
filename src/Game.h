@@ -29,7 +29,7 @@ public:
     void update();
     void handleEvents();
     void clean();
-    void quit();
+    void quit() { m_bRunning = false; }
 
     // function to get the private running variable
     bool running() const { return m_bRunning; }

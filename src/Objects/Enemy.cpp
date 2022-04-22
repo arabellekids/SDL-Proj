@@ -13,8 +13,8 @@ void Enemy::draw()
 
 void Enemy::update()
 {
-    m_vel.setX(InputHandler::Instance()->xvalue(0, 2) * 2);
-    m_vel.setY(InputHandler::Instance()->yvalue(0, 2) * 2);
+    m_vel.setX(InputHandler::Instance()->joy_xvalue(0, 2) * 2);
+    m_vel.setY(InputHandler::Instance()->joy_yvalue(0, 2) * 2);
     
     m_curFrame = (SDL_GetTicks() / 100) % 5;
 

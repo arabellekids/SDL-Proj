@@ -39,7 +39,7 @@ void InputHandler::initJoysticks()
             {
                 tmpButtons.push_back(false);
             }
-            m_buttonStates.push_back(tmpButtons);
+            m_joyButtonStates.push_back(tmpButtons);
         }
         else
         {
@@ -84,13 +84,13 @@ void InputHandler::update()
         if(event.type == SDL_JOYBUTTONDOWN)
         {
             int joyID = event.jaxis.which;
-            m_buttonStates[joyID][event.jbutton.button] = true;
+            m_joyButtonStates[joyID][event.jbutton.button] = true;
         }
         // Button up
         if(event.type == SDL_JOYBUTTONUP)
         {
             int joyID = event.jaxis.which;
-            m_buttonStates[joyID][event.jbutton.button] = false;
+            m_joyButtonStates[joyID][event.jbutton.button] = false;
         }
 
         // Joystick movement
@@ -129,7 +129,7 @@ void InputHandler::update()
     }
 }
 
-float InputHandler::xvalue(int joy, int stick)
+float InputHandler::joy_xvalue(int joy, int stick)
 {
     if(m_joystickValues.size() > 0)
     {
@@ -147,7 +147,7 @@ float InputHandler::xvalue(int joy, int stick)
     return 0;
 }
 
-float InputHandler::yvalue(int joy, int stick)
+float InputHandler::joy_yvalue(int joy, int stick)
 {
     if(m_joystickValues.size() > 0)
     {
