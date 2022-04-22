@@ -14,7 +14,7 @@ public:
 
 protected:
     GameObject() {}
-    GameObject(const LoaderParams* pParams) {}
+    //GameObject(const LoaderParams* pParams) {}
     virtual ~GameObject() {}
 };
 

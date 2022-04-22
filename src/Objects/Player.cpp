@@ -24,21 +24,23 @@ void Player::clean() {}
 
 void Player::handleInput()
 {
-    // Joysticks not initialized
-    if(!InputHandler::Instance()->joysticksInited()){ return; }
-
-    // Xbox button is being pushed
-    if(InputHandler::Instance()->getJoyButtonState(0, XBOXBUTTON_XBOX))
+    m_vel.setX(0);
+    m_vel.setY(0);
+    
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
     {
-        Game::Instance()->quit();
-        return;
+        m_vel.setX(2);
     }
-
-
-    // Y is being pushed
-    if(InputHandler::Instance()->getJoyButtonState(0, XBOXBUTTON_Y)) { return; }
-
-
-    m_vel.setX(InputHandler::Instance()->joy_xvalue(0, 1) * 2);
-    m_vel.setY(InputHandler::Instance()->joy_yvalue(0, 1) * 2);
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
+    {
+        m_vel.setX(-2);
+    }
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
+    {
+        m_vel.setY(-2);
+    }
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
+    {
+        m_vel.setY(2);
+    }
 }

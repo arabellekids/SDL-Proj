@@ -4,6 +4,23 @@
 
 InputHandler* InputHandler::s_pInstance = NULL;
 
+InputHandler::InputHandler()
+{
+    m_mousePos = new Vector2D(0,0);
+    
+    m_mouseButtonStates.push_back(false); // Left mouse button
+    m_mouseButtonStates.push_back(false); // Middle mouse button
+    m_mouseButtonStates.push_back(false); // Right mouse button
+}
+
+// Returns if the given key is down
+bool InputHandler::isKeyDown(SDL_Scancode key)
+{
+    if(m_keyStates == 0) { return false; }
+
+    return (m_keyStates[key] == 1) ? true : false;
+}
+
 // Initializes all connected joysticks
 void InputHandler::initJoysticks()
 {
@@ -71,6 +88,8 @@ void InputHandler::clean()
 // Updates the input
 void InputHandler::update()
 {
+    m_keyStates = SDL_GetKeyboardState(NULL);
+    
     SDL_Event event;
     while(SDL_PollEvent(&event))
     {
@@ -80,13 +99,33 @@ void InputHandler::update()
             Game::Instance()->quit();
         }
 
-        // Button down
+        // Mouse button down
+        if(event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            // SDL mouse buttons are, 1=LEFT, 2=MIDDLE, 3=RIGHT
+            m_mouseButtonStates[event.button.button-1] = true;
+        }
+        // Mouse button up
+        if(event.type == SDL_MOUSEBUTTONUP)
+        {
+            // SDL mouse buttons are, 1=LEFT, 2=MIDDLE, 3=RIGHT
+            m_mouseButtonStates[event.button.button-1] = false;
+        }
+        // Mouse movement
+        if(event.type == SDL_MOUSEMOTION)
+        {
+            m_mousePos->setX(event.motion.x);
+            m_mousePos->setY(event.motion.y);
+        }
+        
+
+        // Joystick button down
         if(event.type == SDL_JOYBUTTONDOWN)
         {
             int joyID = event.jaxis.which;
             m_joyButtonStates[joyID][event.jbutton.button] = true;
         }
-        // Button up
+        // Joystick button up
         if(event.type == SDL_JOYBUTTONUP)
         {
             int joyID = event.jaxis.which;
