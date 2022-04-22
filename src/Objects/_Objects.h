@@ -2,6 +2,7 @@
 #define __OBJECTS__
 
 #include "_LoaderParams.h"
+#include "../Math/Vector2D.h"
 
 // The base Gameobject class
 class GameObject
@@ -12,7 +13,8 @@ public:
     virtual void clean()=0;
 
 protected:
-    //GameObject(const LoaderParams* pParams) {}
+    GameObject() {}
+    GameObject(const LoaderParams* pParams) {}
     virtual ~GameObject() {}
 };
 
@@ -27,8 +29,9 @@ public:
     virtual void clean();
 
 protected:
-    int m_x;
-    int m_y;
+    Vector2D m_pos;
+    Vector2D m_vel;
+    Vector2D m_accel;
     
     int m_w;
     int m_h;
@@ -48,6 +51,8 @@ public:
     virtual void draw();
     virtual void update();
     virtual void clean();
+private:
+    void handleInput();
 };
 
 // The Enemy class

@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "TextureManager.h"
+#include "Input/InputHandler.h"
 
 Game* Game::s_pInstance = NULL;
 
@@ -69,6 +70,8 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     
     std::cout << "Init success!\n";
     
+    InputHandler::Instance()->initJoysticks();
+
     // Initialization finished
     return true;
 }
@@ -88,11 +91,13 @@ void Game::render()
 	SDL_RenderPresent(m_pRenderer);
 }
 
+// Cleans up all resources
 void Game::clean()
 {
 	std::cout << "Cleaning game...\n";
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
+    InputHandler::Instance()->clean();
 
     // Loop through the objects and clean them
     for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
@@ -101,25 +106,18 @@ void Game::clean()
     }
 
     SDL_Delay(2000);
-	SDL_Quit();
 }
 
+void Game::quit()
+{
+    clean();
+    SDL_Quit();
+}
+
+// Handles SDL events
 void Game::handleEvents()
 {
-	SDL_Event event;
-	if(SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-			// Quit the game
-			case SDL_QUIT:
-				m_bRunning = false;
-			break;
-			
-			default:
-			break;
-		}
-	}
+	InputHandler::Instance()->update();
 }
 
 void Game::update()
