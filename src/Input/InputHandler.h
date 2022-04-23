@@ -42,30 +42,33 @@ public:
     void update();
     void clean();
 
-    // Inits joysticks
-    void initJoysticks();
-    bool joysticksInited() { return m_bJoysticksInited; }
+    // Inits the connected joysticks
+    void initInput();
+    bool hasInitialized() { return m_bHasInited; }
 
-    // Returns the x value of the joystick axis
-    float joy_xvalue(int joy, int stick);
-    // Returns the y value of the joystick axis
-    float joy_yvalue(int joy, int stick);
+    // Joystick input ////////////////
 
+    // Returns the value of the joystick axis as a Vector2D*
+    Vector2D* getJoyAxis(int joy, int stick);
     // Returns the joystick button state
-    bool getJoyButtonState(int joy, int buttonNum)
+    bool getJoyButton(int joy, int buttonNum)
     {
         if(m_joyButtonStates.size() == 0){ return false; }
         return m_joyButtonStates[joy][buttonNum];
     }
 
+    // Mouse input ////////////////
+
     // Returns the mouse button state
-    bool getMouseButtonState(int buttonNum)
+    bool getMouseButton(int buttonNum)
     {
         return m_mouseButtonStates[buttonNum];
     }
     // Returns the mouse position
     Vector2D* getMousePos() { return m_mousePos; }
     
+    // Keyboard input ////////////////
+
     // Returns if the given key is down
     bool isKeyDown(SDL_Scancode key);
 
@@ -74,19 +77,36 @@ private:
     ~InputHandler() {}
 
     static InputHandler* s_pInstance;
+    bool m_bHasInited;
 
+    // Joystick values
+    const float m_joyDeadZone = 0.35f;
     std::vector<SDL_Joystick*> m_joysticks;
     std::vector<std::pair<Vector2D*, Vector2D*>> m_joystickValues;
-
     std::vector<std::vector<bool>> m_joyButtonStates;
-    std::vector<bool> m_mouseButtonStates;
 
+    // Mouse values
+    std::vector<bool> m_mouseButtonStates;
     Vector2D* m_mousePos;
+
+    // Keyboard values
     const Uint8* m_keyStates;
 
-    bool m_bJoysticksInited;
-    const float m_joyDeadZone = 0.35f;
+    // Private functions to handle different event types
+
+    // Handle keyboard events
+    void onKeyDown();
+    void onKeyUp();
+
+    // Handle mouse events
+    void onMouseMove(SDL_Event& event);
+    void onMouseButtonDown(SDL_Event& event);
+    void onMouseButtonUp(SDL_Event& event);
+    
+    // Handle joystick events
+    void onJoystickAxisMove(SDL_Event& event);
+    void onJoystickButtonDown(SDL_Event& event);
+    void onJoystickButtonUp(SDL_Event& event);
 };
-typedef InputHandler TheInputHandler;
 
 #endif

@@ -50,6 +50,4 @@ private:
     bool m_bRunning;
 };
 
-typedef Game TheGame;
-
 #endif

@@ -27,19 +27,19 @@ void Player::handleInput()
     m_vel.setX(0);
     m_vel.setY(0);
     
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_D))
     {
         m_vel.setX(2);
     }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_A))
     {
         m_vel.setX(-2);
     }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_W))
     {
         m_vel.setY(-2);
     }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_S))
     {
         m_vel.setY(2);
     }

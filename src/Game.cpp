@@ -14,7 +14,7 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     // Fullscreen is enabled
     if(fullscreen)
     {
-	flags = SDL_WINDOW_FULLSCREEN;
+	    flags = SDL_WINDOW_FULLSCREEN;
     }
     
     // Init SDL
@@ -55,9 +55,6 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     SDL_SetRenderDrawColor(m_pRenderer, 255,0,0,255);
     SDL_RenderClear(m_pRenderer);
     SDL_RenderPresent(m_pRenderer);
-
-    // Run the game
-    m_bRunning = true;
     
     //Load the texture
     if(!TextureManager::Instance()->load("assets/goku_punch_anim.png", "Goku", m_pRenderer))
@@ -65,14 +62,16 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
         return false;
     }
 
+    // Add the objects
     m_gameObjects.push_back( new Player(new LoaderParams(100,100, 68,54, "Goku")) );
     m_gameObjects.push_back( new Enemy(new LoaderParams(300,300, 68,54, "Goku")) );
     
-    std::cout << "Init success!\n";
+    // Init input
+    InputHandler::Instance()->initInput();
     
-    InputHandler::Instance()->initJoysticks();
-
     // Initialization finished
+    std::cout << "Init success!\n";
+    m_bRunning = true;
     return true;
 }
 

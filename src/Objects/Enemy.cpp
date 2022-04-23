@@ -13,10 +13,27 @@ void Enemy::draw()
 
 void Enemy::update()
 {
-    m_vel.setX(InputHandler::Instance()->joy_xvalue(0, 2) * 2);
-    m_vel.setY(InputHandler::Instance()->joy_yvalue(0, 2) * 2);
-    
     m_curFrame = (SDL_GetTicks() / 100) % 5;
+    
+    m_vel.setX(0);
+    m_vel.setY(0);
+    
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
+    {
+        m_vel.setX(2);
+    }
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
+    {
+        m_vel.setX(-2);
+    }
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
+    {
+        m_vel.setY(-2);
+    }
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
+    {
+        m_vel.setY(2);
+    }
 
     SDLGameObject::update();
 }
