@@ -4,6 +4,9 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "Input/InputHandler.h"
+#include "States/MenuState.h"
+#include "States/PlayState.h"
+#include "States/DefaultState.h"
 
 Game* Game::s_pInstance = NULL;
 
@@ -56,15 +59,14 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     SDL_RenderClear(m_pRenderer);
     SDL_RenderPresent(m_pRenderer);
     
-    //Load the texture
-    if(!TextureManager::Instance()->load("assets/goku_punch_anim.png", "Goku", m_pRenderer))
-    {
-        return false;
-    }
-
+    // Init the GameStateMachine
+    m_pGameStateMachine = new GameStateMachine();
+    m_pGameStateMachine->pushState(new DefaultState());
+    m_pGameStateMachine->changeState(new MenuState());
+    
     // Add the objects
-    m_gameObjects.push_back( new Player(new LoaderParams(100,100, 68,54, "Goku")) );
-    m_gameObjects.push_back( new Enemy(new LoaderParams(300,300, 68,54, "Goku")) );
+    //m_gameObjects.push_back( new Player(new LoaderParams(100,100, 68,54, "Goku")) );
+    //m_gameObjects.push_back( new Enemy(new LoaderParams(300,300, 68,54, "Goku")) );
     
     // Init input
     InputHandler::Instance()->initInput();
@@ -80,14 +82,39 @@ void Game::render()
 	// Clear the renderer to the draw color
 	SDL_RenderClear(m_pRenderer);
 	
-    // Loop through the objects and draw them
-    for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
-    {
-        m_gameObjects[i]->draw();
-    }
+    // Call render on the GameStateMachine
+    m_pGameStateMachine->render();
+
+    // // Loop through the objects and draw them
+    // for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
+    // {
+    //     m_gameObjects[i]->draw();
+    // }
 
 	// Draw to the screen
 	SDL_RenderPresent(m_pRenderer);
+}
+void Game::update()
+{
+    // Call update on the GameStateMachine
+    m_pGameStateMachine->update();
+    
+    // // Loop through the objects and draw them
+    // for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
+    // {
+    //     m_gameObjects[i]->update();
+    // }
+}
+
+// Handles SDL events
+void Game::handleEvents()
+{
+	InputHandler::Instance()->update();
+
+    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RETURN))
+    {
+        m_pGameStateMachine->changeState(new PlayState());
+    }
 }
 
 // Cleans up all resources
@@ -106,19 +133,4 @@ void Game::clean()
     
     SDL_Delay(2000);
     SDL_Quit();
-}
-
-// Handles SDL events
-void Game::handleEvents()
-{
-	InputHandler::Instance()->update();
-}
-
-void Game::update()
-{
-    // Loop through the objects and draw them
-    for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
-    {
-        m_gameObjects[i]->update();
-    }
 }

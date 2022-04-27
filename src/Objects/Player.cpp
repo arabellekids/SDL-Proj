@@ -14,7 +14,7 @@ void Player::draw()
 
 void Player::update()
 {
-    m_curFrame = (SDL_GetTicks() / 100) % 5;
+    m_curFrame = 0;
 
     handleInput();
     SDLGameObject::update();
@@ -23,24 +23,8 @@ void Player::update()
 void Player::clean() {}
 
 void Player::handleInput()
-{
-    m_vel.setX(0);
-    m_vel.setY(0);
-    
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_D))
-    {
-        m_vel.setX(2);
-    }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_A))
-    {
-        m_vel.setX(-2);
-    }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_W))
-    {
-        m_vel.setY(-2);
-    }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_S))
-    {
-        m_vel.setY(2);
-    }
+{   
+    const Vector2D& target = InputHandler::Instance()->getMousePos();
+    m_vel = target - m_pos;
+    m_vel *= 0.02;
 }

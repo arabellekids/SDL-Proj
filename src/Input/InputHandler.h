@@ -44,14 +44,14 @@ public:
 
     // Inits the connected joysticks
     void initInput();
-    bool hasInitialized() { return m_bHasInited; }
+    bool hasInitialized() const { return m_bHasInited; }
 
     // Joystick input ////////////////
 
     // Returns the value of the joystick axis as a Vector2D*
     Vector2D* getJoyAxis(int joy, int stick);
     // Returns the joystick button state
-    bool getJoyButton(int joy, int buttonNum)
+    bool getJoyButton(int joy, int buttonNum) const
     {
         if(m_joyButtonStates.size() == 0){ return false; }
         return m_joyButtonStates[joy][buttonNum];
@@ -60,12 +60,13 @@ public:
     // Mouse input ////////////////
 
     // Returns the mouse button state
-    bool getMouseButton(int buttonNum)
+    bool getMouseButton(int buttonNum) const
     {
         return m_mouseButtonStates[buttonNum];
     }
+    
     // Returns the mouse position
-    Vector2D* getMousePos() { return m_mousePos; }
+    const Vector2D& getMousePos() const { return m_mousePos; }
     
     // Keyboard input ////////////////
 
@@ -87,7 +88,7 @@ private:
 
     // Mouse values
     std::vector<bool> m_mouseButtonStates;
-    Vector2D* m_mousePos;
+    Vector2D m_mousePos;
 
     // Keyboard values
     const Uint8* m_keyStates;

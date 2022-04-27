@@ -16,9 +16,19 @@ m_pos(pParams->getX(), pParams->getY()), m_vel(0,0), m_accel(0,0)
 
 void SDLGameObject::draw()
 {
-    TextureManager::Instance()->drawFrame(m_texID,
-    (int)m_pos.getX(), (int)m_pos.getY(),
-    m_w,m_h, m_curRow,m_curFrame, Game::Instance()->getRenderer());
+    if(m_vel.getX() >= 0)
+    {
+        TextureManager::Instance()->drawFrame(m_texID,
+        (int)m_pos.getX(), (int)m_pos.getY(),
+        m_w,m_h, m_curRow,m_curFrame, Game::Instance()->getRenderer());
+    }
+    else
+    {
+        TextureManager::Instance()->drawFrame(m_texID,
+        (int)m_pos.getX(), (int)m_pos.getY(),
+        m_w,m_h, m_curRow,m_curFrame, Game::Instance()->getRenderer(),
+        SDL_FLIP_HORIZONTAL);
+    }
 }
 
 void SDLGameObject::update()

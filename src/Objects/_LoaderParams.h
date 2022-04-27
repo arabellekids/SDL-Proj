@@ -8,7 +8,6 @@ class LoaderParams
 public:
     LoaderParams(int x,int y, int w,int h, std::string texID) : m_x(x),m_y(y), m_w(w),m_h(h), m_texID(texID)
     {
-
     }
     int getX() const { return m_x; }
     int getY() const { return m_y; }

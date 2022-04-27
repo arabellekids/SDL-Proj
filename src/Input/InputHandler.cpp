@@ -6,7 +6,8 @@ InputHandler* InputHandler::s_pInstance = NULL;
 
 InputHandler::InputHandler()
 {
-    m_mousePos = new Vector2D(0,0);
+    m_bHasInited = false;
+    m_keyStates = nullptr;
     
     m_mouseButtonStates.push_back(false); // Left mouse button
     m_mouseButtonStates.push_back(false); // Middle mouse button
@@ -199,8 +200,8 @@ void InputHandler::onJoystickButtonUp(SDL_Event& event)
 
 void InputHandler::onMouseMove(SDL_Event& event)
 {
-    m_mousePos->setX(event.motion.x);
-    m_mousePos->setY(event.motion.y);
+    m_mousePos.setX(event.motion.x);
+    m_mousePos.setY(event.motion.y);
 }
 void InputHandler::onMouseButtonDown(SDL_Event& event)
 {

@@ -1,10 +1,12 @@
 #ifndef __GAME__
 #define __GAME__
 
-#include <SDL2/SDL.h>
 #include <iostream>
+#include <SDL2/SDL.h>
+
 #include <vector>
 #include "Objects/_Objects.h"
+#include "States/GameStateMachine.h"
 
 // The Game class
 class Game
@@ -36,6 +38,7 @@ public:
 
     // Function to get the private SDL_Renderer
     SDL_Renderer* getRenderer() const { return m_pRenderer; }
+    GameStateMachine* getStateMachine() const { return m_pGameStateMachine; }
 
 private:
     Game(){}
@@ -44,6 +47,8 @@ private:
 
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;
+
+    GameStateMachine* m_pGameStateMachine;
 
     std::vector<GameObject*> m_gameObjects;
     

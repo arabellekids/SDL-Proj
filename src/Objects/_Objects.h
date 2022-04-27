@@ -8,9 +8,9 @@
 class GameObject
 {
 public:
-    virtual void draw()=0;
-    virtual void update()=0;
-    virtual void clean()=0;
+    virtual void draw() = 0;
+    virtual void update() = 0;
+    virtual void clean() = 0;
 
 protected:
     GameObject() {}
@@ -64,6 +64,27 @@ public:
     virtual void draw();
     virtual void update();
     virtual void clean();
+};
+
+// The MenuButton class
+class MenuButton : public SDLGameObject
+{
+public:
+    MenuButton(const LoaderParams* pParams, void (*callback) ());
+
+    virtual void draw();
+    virtual void update();
+    virtual void clean();
+private:
+    void (*m_callback) ();
+    bool m_bReleased;
+
+    enum button_state
+    {
+        MOUSE_OUT = 0,
+        MOUSE_OVER = 1,
+        MOUSE_CLICKED = 2
+    };
 };
 
 #endif
