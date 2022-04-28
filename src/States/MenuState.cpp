@@ -1,6 +1,5 @@
 #include <iostream>
-#include "MenuState.h"
-#include "PlayState.h"
+#include "_States.h"
 #include "../TextureManager.h"
 #include "../Game.h"
 

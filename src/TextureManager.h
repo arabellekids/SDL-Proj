@@ -17,8 +17,8 @@ public:
     // Draws a frame from a texture
     void drawFrame(std::string id, int x,int y, int w,int h, int curRow,int curFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-    // Removes a texture from the texture list
-    void clearTex(std::string id) { m_textureMap.erase(id); }
+    // Removes a texture from the texture list  and destroys it
+    void clearTex(std::string id);
 
     static TextureManager* Instance()
     {

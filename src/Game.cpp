@@ -4,9 +4,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "Input/InputHandler.h"
-#include "States/MenuState.h"
-#include "States/PlayState.h"
-#include "States/DefaultState.h"
+#include "States/_States.h"
 
 Game* Game::s_pInstance = NULL;
 
@@ -61,7 +59,6 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     
     // Init the GameStateMachine
     m_pGameStateMachine = new GameStateMachine();
-    m_pGameStateMachine->pushState(new DefaultState());
     m_pGameStateMachine->changeState(new MenuState());
     
     // Add the objects

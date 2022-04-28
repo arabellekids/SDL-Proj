@@ -28,6 +28,13 @@ public:
     virtual void update();
     virtual void clean();
 
+    Vector2D& getPos() { return m_pos; }
+    Vector2D& getVel() { return m_vel; }
+    Vector2D& getAccel() { return m_accel; }
+
+    int getW() const { return m_w; }
+    int getH() const { return m_h; }
+
 protected:
     Vector2D m_pos;
     Vector2D m_vel;
@@ -86,5 +93,20 @@ private:
         MOUSE_CLICKED = 2
     };
 };
+
+// The AnimatedGraphic class
+class AnimatedGraphic : public SDLGameObject
+{
+public:
+    AnimatedGraphic(const LoaderParams* pParams, int animSpeed, int numFrames);
+
+    virtual void draw();
+    virtual void update();
+    virtual void clean();
+private:
+    int m_animSpeed;
+    int m_numFrames;
+};
+
 
 #endif

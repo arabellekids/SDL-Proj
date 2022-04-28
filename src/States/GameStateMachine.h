@@ -2,7 +2,7 @@
 #define __GAMESTATEMACHINE__
 
 #include <vector>
-#include "GameState.h"
+#include "_States.h"
 
 class GameStateMachine
 {

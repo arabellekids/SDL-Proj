@@ -5,6 +5,7 @@
 
 Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
+    m_curFrame = 0;
 }
 
 void Player::draw()
@@ -14,8 +15,6 @@ void Player::draw()
 
 void Player::update()
 {
-    m_curFrame = 0;
-
     handleInput();
     SDLGameObject::update();
 }

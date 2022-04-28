@@ -4,6 +4,9 @@
 
 Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
+    m_curFrame = 0;
+    m_vel.setY(2);
+    m_vel.setX(0.001);
 }
 
 void Enemy::draw()
@@ -13,28 +16,8 @@ void Enemy::draw()
 
 void Enemy::update()
 {
-    m_curFrame = (SDL_GetTicks() / 100) % 5;
-    
-    m_vel.setX(0);
-    m_vel.setY(0);
-    
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
-    {
-        m_vel.setX(2);
-    }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
-    {
-        m_vel.setX(-2);
-    }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
-    {
-        m_vel.setY(-2);
-    }
-    if(InputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
-    {
-        m_vel.setY(2);
-    }
-
+    if(m_pos.getY() < 0) { m_vel.setY(2); }
+    else if(m_pos.getY() > 400) { m_vel.setY(-2); }
     SDLGameObject::update();
 }
 
