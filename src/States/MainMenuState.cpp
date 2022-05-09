@@ -1,11 +1,12 @@
+#include <iostream>
 #include "_States.h"
 #include "../Factory/StateParser.h"
-#include "../Game.h"
 #include "../TextureManager.h"
+#include "../Game.h"
 
-const std::string GameOverState::s_gameOverID = "GAMEOVER";
+const std::string MainMenuState::s_menuID = "MENU";
 
-void GameOverState::setCallbacks(const std::vector<Callback>& callbacks)
+void MainMenuState::setCallbacks(const std::vector<Callback>& callbacks)
 {
     // Loop through the game objects
     for(std::vector<GameObject*>::size_type i = 0; i < m_gameObjects.size(); i++)
@@ -19,7 +20,7 @@ void GameOverState::setCallbacks(const std::vector<Callback>& callbacks)
     }
 }
 
-void GameOverState::update()
+void MainMenuState::update()
 {
     for(std::vector<GameObject*>::size_type i = 0; i < m_gameObjects.size(); i++)
     {
@@ -27,7 +28,7 @@ void GameOverState::update()
     }
 }
 
-void GameOverState::render()
+void MainMenuState::render()
 {
     for(std::vector<GameObject*>::size_type i = 0; i < m_gameObjects.size(); i++)
     {
@@ -35,25 +36,24 @@ void GameOverState::render()
     }
 }
 
-bool GameOverState::onEnter()
+bool MainMenuState::onEnter()
 {
     // Parse the state
     StateParser stateParser;
-    stateParser.parseState("test.xml", s_gameOverID, &m_gameObjects, &m_texIDList);
+    stateParser.parseState("test.xml", s_menuID, &m_gameObjects, &m_texIDList);
 
     m_callbacks.push_back(nullptr); // Pushback nullptr calbackID to start from 1
-    m_callbacks.push_back(s_gameOverToMain);
-    m_callbacks.push_back(s_restartPlay);
+    m_callbacks.push_back(s_menuToPlay);
+    m_callbacks.push_back(s_exitFromMenu);
 
     // Set the callbacks for menu items
     setCallbacks(m_callbacks);
-    
-    std::cout << "Entering GameOverState\n";
 
+    std::cout << "Entering MenuState\n";
     return true;
 }
 
-bool GameOverState::onExit()
+bool MainMenuState::onExit()
 {
     for(std::vector<GameObject*>::size_type i = 0; i < m_gameObjects.size(); i++)
     {
@@ -68,16 +68,18 @@ bool GameOverState::onExit()
         TextureManager::Instance()->clearTex(m_texIDList[i]);
     }
     m_texIDList.clear();
-
-    std::cout << "Exiting GameOverState\n";
+    
+    std::cout << "Exiting MenuState\n";
     return true;
 }
 
-void GameOverState::s_gameOverToMain()
+void MainMenuState::s_menuToPlay()
 {
-    Game::Instance()->getStateMachine()->changeState(new MainMenuState());
-}
-void GameOverState::s_restartPlay()
-{
+    std::cout << "Play button clicked!\n";
     Game::Instance()->getStateMachine()->changeState(new PlayState());
+}
+void MainMenuState::s_exitFromMenu()
+{
+    std::cout << "Exit button clicked!\n";
+    Game::Instance()->quit();
 }

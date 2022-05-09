@@ -2,11 +2,14 @@
 #include "_Objects.h"
 #include "../Input/InputHandler.h"
 
-Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
+Enemy::Enemy() : SDLGameObject()
+{ 
+}
+
+void Enemy::load(const LoaderParams* pParams)
 {
-    m_curFrame = 0;
+    SDLGameObject::load(pParams);
     m_vel.setY(2);
-    m_vel.setX(0.001);
 }
 
 void Enemy::draw()

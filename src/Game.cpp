@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "Input/InputHandler.h"
 #include "States/_States.h"
+#include "Factory/GameObjectFactory.h"
 
 Game* Game::s_pInstance = NULL;
 
@@ -53,17 +54,20 @@ bool Game::init(const char* title, int xpos,int ypos, int width,int height, bool
     std::cout << "Renderer creation success!\n";
     
     // Clear the window
-    SDL_SetRenderDrawColor(m_pRenderer, 255,0,0,255);
+    SDL_SetRenderDrawColor(m_pRenderer, 0,0,100,255);
     SDL_RenderClear(m_pRenderer);
     SDL_RenderPresent(m_pRenderer);
     
+    // Register the object types
+    GameObjectFactory::Instance()->registerType("MenuButton", new MenuButtonCreator());
+    GameObjectFactory::Instance()->registerType("Player", new PlayerCreator());
+    GameObjectFactory::Instance()->registerType("Enemy", new EnemyCreator());
+    GameObjectFactory::Instance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
+    
+
     // Init the GameStateMachine
     m_pGameStateMachine = new GameStateMachine();
-    m_pGameStateMachine->changeState(new MenuState());
-    
-    // Add the objects
-    //m_gameObjects.push_back( new Player(new LoaderParams(100,100, 68,54, "Goku")) );
-    //m_gameObjects.push_back( new Enemy(new LoaderParams(300,300, 68,54, "Goku")) );
+    m_pGameStateMachine->changeState(new MainMenuState());
     
     // Init input
     InputHandler::Instance()->initInput();
@@ -82,12 +86,6 @@ void Game::render()
     // Call render on the GameStateMachine
     m_pGameStateMachine->render();
 
-    // // Loop through the objects and draw them
-    // for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
-    // {
-    //     m_gameObjects[i]->draw();
-    // }
-
 	// Draw to the screen
 	SDL_RenderPresent(m_pRenderer);
 }
@@ -95,12 +93,6 @@ void Game::update()
 {
     // Call update on the GameStateMachine
     m_pGameStateMachine->update();
-    
-    // // Loop through the objects and draw them
-    // for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
-    // {
-    //     m_gameObjects[i]->update();
-    // }
 }
 
 // Handles SDL events
@@ -122,12 +114,6 @@ void Game::clean()
 	SDL_DestroyRenderer(m_pRenderer);
     InputHandler::Instance()->clean();
 
-    // Loop through the objects and clean them
-    for(std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
-    {
-        m_gameObjects[i]->clean();
-    }
-    
-    SDL_Delay(2000);
+    //SDL_Delay(2000);
     SDL_Quit();
 }

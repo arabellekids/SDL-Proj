@@ -19,10 +19,23 @@ public:
     virtual std::string getStateID() const = 0;
     
     virtual ~GameState() {}
+protected:
+    std::vector<GameObject*> m_gameObjects;
+    std::vector<std::string> m_texIDList;
 };
 
-// The MenuState state
+// The Base MenuState state
 class MenuState : public GameState
+{
+protected:
+    typedef void(*Callback) ();
+    virtual void setCallbacks(const std::vector<Callback>& callbacks) = 0;
+
+    std::vector<Callback> m_callbacks;
+};
+
+// The MainMenuState state
+class MainMenuState : public MenuState
 {
 public:
     virtual void update();
@@ -34,16 +47,17 @@ public:
     virtual std::string getStateID() const { return s_menuID; }
 
 private:
+    virtual void setCallbacks(const std::vector<Callback>& callbacks);
+
     // Callback functions for menu items
     static void s_menuToPlay();
     static void s_exitFromMenu();
     
     static const std::string s_menuID;
-    std::vector<GameObject*> m_gameObjects;
 };
 
 // The PauseState state
-class PauseState : public GameState
+class PauseState : public MenuState
 {
 public:
     virtual void update();
@@ -55,12 +69,13 @@ public:
     virtual std::string getStateID() const { return s_pauseID; }
 
 private:
+    virtual void setCallbacks(const std::vector<Callback>& callbacks);
+
     // Callback functions for menu items
     static void s_pauseToMain();
     static void s_resumePlay();
     
     static const std::string s_pauseID;
-    std::vector<GameObject*> m_gameObjects;
 };
 
 // The PlayState state
@@ -76,11 +91,10 @@ class PlayState : public GameState
 private:
     bool checkCollision(SDLGameObject* p1, SDLGameObject* p2);
     static const std::string s_playID;
-    std::vector<GameObject*> m_gameObjects;
 };
 
 // The GameOverState state
-class GameOverState : public GameState
+class GameOverState : public MenuState
 {
     virtual void update();
     virtual void render();
@@ -90,12 +104,12 @@ class GameOverState : public GameState
     
     virtual std::string getStateID() const { return s_gameOverID; }
 private:
+    virtual void setCallbacks(const std::vector<Callback>& callbacks);
     static void s_gameOverToMain();
     static void s_restartPlay();
     
 
     static const std::string s_gameOverID;
-    std::vector<GameObject*> m_gameObjects;
 };
 
 #endif

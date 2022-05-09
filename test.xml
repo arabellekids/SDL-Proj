@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<STATES>
+<MENU>
+<TEXTURES>
+    <texture filename="assets/PlayButtonSheet.png" ID="PlayButton"/>
+    <texture filename="assets/ExitButtonSheet.png" ID="ExitButton"/>
+</TEXTURES>
+
+<OBJECTS>
+    <object type="MenuButton" x="100" y="100" w="400" h="100" texID="PlayButton" numFrames="0" callbackID="1"/>
+    <object type="MenuButton" x="100" y="300" w="400" h="100" texID="ExitButton" numFrames="0" callbackID="2"/>
+</OBJECTS>
+</MENU>
+
+<PLAY>
+<TEXTURES>
+    <texture filename="assets/BlackShip1_Right.png" ID="BlackShip"/>
+    <texture filename="assets/Destroyer_Right.png" ID="Destroyer"/>
+</TEXTURES>
+
+<OBJECTS>
+    <object type="Player" x="500" y="100" w="146" h="87" texID="BlackShip" numFrames="0"/>
+    <object type="Enemy" x="100" y="100" w="239" h="174" texID="Destroyer" numFrames="0"/>
+</OBJECTS>
+</PLAY>
+
+<PAUSE>
+<TEXTURES>
+    <texture filename="assets/ResumeButtonSheet.png" ID="ResumeButton"/>
+    <texture filename="assets/MenuButtonSheet.png" ID="MenuButton"/>
+</TEXTURES>
+
+<OBJECTS>
+    <object type="MenuButton" x="200" y="100" w="200" h="80" texID="MenuButton" numFrames="0" callbackID="1"/>
+    <object type="MenuButton" x="200" y="300" w="200" h="80" texID="ResumeButton" numFrames="0" callbackID="2"/>
+</OBJECTS>
+</PAUSE>
+
+<GAMEOVER>
+<TEXTURES>
+    <texture filename="assets/GameOverSheet.png" ID="GameOverText"/>
+    <texture filename="assets/MenuButtonSheet.png" ID="MenuButton"/>
+    <texture filename="assets/RestartButtonSheet.png" ID="RestartButton"/>
+</TEXTURES>
+
+<OBJECTS>
+    <object type="AnimatedGraphic" x="200" y="100" w="190" h="30" texID="GameOverText" numFrames="2" animSpeed="2"/>
+    <object type="MenuButton" x="200" y="200" w="200" h="80" texID="MenuButton" numFrames="0" callbackID="1"/>
+    <object type="MenuButton" x="200" y="300" w="200" h="80" texID="RestartButton" numFrames="0" callbackID="2"/>
+</OBJECTS>
+</GAMEOVER>
+</STATES>

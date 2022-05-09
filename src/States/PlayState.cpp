@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "_States.h"
+#include "../Factory/StateParser.h"
 #include "../Input/InputHandler.h"
 #include "../TextureManager.h"
 #include "../Game.h"
@@ -26,7 +27,7 @@ void PlayState::update()
     dynamic_cast<SDLGameObject*>(m_gameObjects[0]),
     dynamic_cast<SDLGameObject*>(m_gameObjects[1])))
     {
-        Game::Instance()->getStateMachine()->pushState(new GameOverState());
+        Game::Instance()->getStateMachine()->changeState(new GameOverState());
         return;
     }
 
@@ -43,24 +44,9 @@ void PlayState::render()
 
 bool PlayState::onEnter()
 {
-    // Load the images
-    if(!TextureManager::Instance()->load("assets/BlackShip1_Right.png","PlayerShip",
-    Game::Instance()->getRenderer()))
-    {
-        return false;
-    }
-    
-    if(!TextureManager::Instance()->load("assets/Destroyer_Right.png","EnemyShip",
-    Game::Instance()->getRenderer()))
-    {
-        return false;
-    }
-
-    GameObject* player = new Player(new LoaderParams(500,100,146,87, "PlayerShip"));
-    GameObject* enemy = new Enemy(new LoaderParams(100,100,239,174, "EnemyShip"));
-    
-    m_gameObjects.push_back(player);
-    m_gameObjects.push_back(enemy);
+    // Parse the state
+    StateParser stateParser;
+    stateParser.parseState("test.xml", s_playID, &m_gameObjects, &m_texIDList);
 
     std::cout << "Entering PlayState\n";
     return true;
@@ -75,8 +61,12 @@ bool PlayState::onExit()
     }
     m_gameObjects.clear();
 
-    // Remove the loaded texture
-    TextureManager::Instance()->clearTex("Ship");
+    // Clear the loaded textures from the texture manager
+    for(std::vector<std::string>::size_type i = 0; i < m_texIDList.size(); i++)
+    {
+        TextureManager::Instance()->clearTex(m_texIDList[i]);
+    }
+    m_texIDList.clear();
 
     std::cout << "Exiting PlayState\n";
     return true;

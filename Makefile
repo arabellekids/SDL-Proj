@@ -1,5 +1,5 @@
 EXE = SDLApp
-LIBS = -lSDL2 -lSDL2_image
+LIBS = -lSDL2 -lSDL2_image -ltinyxml2
 DEBUG = FALSE
 
 GCC = gcc
